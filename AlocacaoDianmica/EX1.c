@@ -187,31 +187,36 @@ void excluir(int *idx,int inicial , bloco *vet)
 
 }
 
+void string_redimensionada(char *string, int novo_tamanho, char *nova_string){
+	int i;
+	
+	for(i = 0; i < novo_tamanho; i++){
+		nova_string[i] = string[i];
+	}
+}
+
 void    redefine(bloco *vet)
 {
     int tam,tam_ant;
     char op, *end_final,*iptr;
 
     tam_ant = vet->tamb;
-
-
+    
     printf("\ntamanho atual do bloco: %d",tam_ant);
 
     puts("\ninsira o tamanho com a reducao ou aumento");
     scanf("%d",&vet->tamb);
-
-    if ((vet->conteudo = (char*) realloc((char*) vet->conteudo, vet->tamb*sizeof(char))) == NULL) {
+	char *novo_conteudo;
+    string_redimensionada(vet->conteudo, vet->tamb, novo_conteudo);
+	if ((vet->conteudo = (char*) realloc((char*) vet->conteudo, vet->tamb*sizeof(char))) == NULL) {
         puts("texto nao suportado no novo espaço");
         exit(1);
     }
     else{
         vet->end_in =(int *) vet->conteudo;
     }
+    //printf("%s\n", novo_conteudo);
+    vet->conteudo = novo_conteudo; 
     char ch;
     ch = getch( );fflush(stdin);
-    if(ch==':'){}
-    else
-    return;
-
-
 }
