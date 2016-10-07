@@ -217,6 +217,7 @@ void    redefine(bloco *vet)
     }
     //printf("%s\n", novo_conteudo);
     vet->conteudo = novo_conteudo; 
+    free_novo_conteudo;
     char ch;
     ch = getch( );fflush(stdin);
 }
