@@ -13,33 +13,8 @@ typedef struct asd {
 	struct asd *proximo_registro;
 }REGISTRO;
 
-void init_valores(char *nome_doc, char *nome_resp, char *data, char *tipo, int *num_folhas){
-	char temp_nome_doc[50], temp_nome_resp[50], temp_data[10], temp_tipo;
-	int temp_num_folhas;
-
-	puts("Insira o nome do documento: ");
-	scanf(" %s", temp_nome_doc);
-	strcpy(nome_doc, temp_nome_doc);
-	
-	puts("Insira o nome do responsavel: ");
-	scanf(" %s", temp_nome_resp);
-	strcpy(nome_resp, temp_nome_resp);
-	
-	puts("Insira a data: ");
-	scanf(" %s", temp_data);
-	strcpy(data, temp_data);	
-
-	puts("Insira o tipo de documento: ");
-	scanf(" %c", &temp_tipo);
-	*tipo = temp_tipo;
-		
-	puts("Insira o numero de folhas: ");
-	scanf(" %d", &temp_num_folhas);
-	*num_folhas = temp_num_folhas;
-}
-
-void cria_registro(REGISTRO **ancora){
-	char *nome_doc, *nome_resp, *data, tipo;
+void cria_registro(REGISTRO **ancora, int id){
+	char nome_doc[50], nome_resp[50], data[10], tipo;
 	int num_folhas;
 	REGISTRO *novo_registro;
 //	init_valores(nome_doc, nome_resp, data, &tipo, &num_folhas); //Da um valor para cada variavel que vai ser incluida no registro
@@ -63,6 +38,7 @@ void cria_registro(REGISTRO **ancora){
 		//novo_registro ->nome_do_documento = nome_doc;
 		//novo_registro ->nome_do_responsavel = nome_resp;
 		strcpy(novo_registro -> data_do_registro, data);
+		novo_registro -> id = id;
 		novo_registro ->tipo_de_doc = tipo;
 		novo_registro ->numero_de_folhas = num_folhas;
 		novo_registro -> proximo_registro = *ancora;
@@ -79,7 +55,7 @@ int listaRegistros(REGISTRO *reg){
 	printf("Data do registro: %s\n", reg -> data_do_registro);
 	printf("Tipo do documento: %c\n", reg -> tipo_de_doc);
 	printf("Numero de folhas: %d\n", reg -> numero_de_folhas);
-	printf("imprime mais um? (s/n)\n");
+	printf("\nimprime mais um? (s/n)\n\n");
 	temProx = getch( );fflush(stdin);
 	if(temProx == 'n' || reg -> proximo_registro == NULL)
 		return 0;
@@ -92,18 +68,24 @@ int main(){
 	char op;	//Char usado para definir a operacao
 	char wait;	//Char utilizado para forcar o usuario a apertar enter para prosseguir
 	criaLista(&ancora);
+    system("color 1E");
 	do{
 		puts("1 - Criar registro\n2 - Imprime registros\n");
 		op = getch( );fflush(stdin);	//Caractere que define a operacao a ser realizada
 		switch(op){
 			case '1':
-				cria_registro(&ancora); 
-				puts("Registro criado com sucesso!! Pressione qualquer tecla para continuar...");
+				cria_registro(&ancora, id); 
+				printf("Registro criado com sucesso!! Seu ID e %d\n Pressione qualquer tecla para continuar...", id);
+				id++;
 				wait = getch( );fflush(stdin);
 				system("CLS");
 				break;
 			case '2':
 				listaRegistros(ancora);
+				system("CLS");
+				break;
+			case '3':
+				
 				break;
 		}
 	}while(op != 's');
