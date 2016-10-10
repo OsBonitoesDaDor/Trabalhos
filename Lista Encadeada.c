@@ -48,6 +48,71 @@ void cria_registro(REGISTRO **ancora, int id){
 void criaLista(REGISTRO **reg){
 		*reg = NULL;
 }
+
+int modifica_registro(REGISTRO *ancora, int id){
+	REGISTRO *tempReg = ancora;
+	char id_mod; //
+	char nova_string[50];
+	do{
+		if(tempReg -> id == id)
+			break;
+		else
+			tempReg = tempReg -> proximo_registro ;
+	}while(1);
+	printf("ID do registro: %d\n", tempReg -> id);
+	printf("1 - Nome do documento %s\n", tempReg ->nome_do_documento);
+	printf("2 - Nome do responsavel: %s\n", tempReg ->nome_do_responsavel);
+	printf("3 - Data do registro: %s\n", tempReg ->data_do_registro);
+	printf("4 - Tipo de documento: %c\n", tempReg ->tipo_de_doc);
+	printf("5 - Numero de folhas: %d\n", tempReg ->numero_de_folhas);
+	printf("s - Voltar para o meno principal\n\n");
+//	do{
+		printf("Insira a opcao de modificacao: ");
+		scanf(" %c", &id_mod);
+		switch(id_mod){
+			case '1':
+				printf("Insira um novo nome para o documento: ");
+				scanf(" %s", nova_string);
+		//		free(tempReg -> nome_do_documento);
+				strcpy(tempReg -> nome_do_documento, nova_string);
+				break;
+			case '2':
+				printf("Insira um novo nome para o responsavel: ");
+				scanf(" %s", nova_string);
+		//		free(tempReg -> nome_do_responsavel);
+				strcpy(tempReg -> nome_do_responsavel, nova_string);
+				break;
+			case '3':
+				printf("Insira uma nova data para o documento: ");
+				scanf(" %s", nova_string);
+			//	free(tempReg -> data_do_registro);
+				//strcpy(tempReg -> data_do_registro, nova_string);
+				for(int i = 0; i < strlen(nova_string); i++){
+					tempReg -> data_do_registro[i] = nova_string[i];
+				}
+				break;
+			case '4':
+				char novo_tipo;
+				printf("Insira um novo tipo para o documento: ");
+				//novo_tipo = getch ( ); fflush(stdin);
+				//free(tempReg -> tipo_de_doc);
+				scanf(" %c", &novo_tipo);
+				tempReg -> tipo_de_doc = novo_tipo;
+				break;
+			case '5':
+				int novo_num;
+				printf("Insira o novo numero de folhas: ");
+				scanf(" %s", &novo_num);
+				//free(tempReg -> numero_de_folhas);
+				tempReg -> numero_de_folhas = novo_num;
+				break;
+			case 's':
+				return 1;
+		}
+//	}while(1);
+	return 0;
+}
+
 int listaRegistros(REGISTRO *reg){
 	char temProx;	//Char que checa se deve mostrar mais um registro
 	printf("Nome do documento: %s\n", reg -> nome_do_documento);
@@ -70,7 +135,7 @@ int main(){
 	criaLista(&ancora);
     system("color 1E");
 	do{
-		puts("1 - Criar registro\n2 - Imprime registros\n");
+		puts("1 - Criar registro\n2 - Imprime registros\n3 - Modifica registro\n");
 		op = getch( );fflush(stdin);	//Caractere que define a operacao a ser realizada
 		switch(op){
 			case '1':
@@ -85,7 +150,11 @@ int main(){
 				system("CLS");
 				break;
 			case '3':
-				
+				int id_reg;	//Variavel que armazena o ID do regsitro a ser modificado
+				puts("Insira o ID do documento a ser modificado: ");
+				scanf(" %d", &id_reg);
+				modifica_registro(ancora, id_reg);
+				system("CLS");
 				break;
 		}
 	}while(op != 's');
