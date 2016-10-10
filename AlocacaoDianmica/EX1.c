@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +20,7 @@ void imprime_bloco(bloco *);
 void novo_bloco(int *, bloco *);
 void inserir (int , bloco *);
 void excluir(int *,int, bloco *);
-void redefine(bloco *);
+void redefine(bloco *, int *);
 
 int main(){
     bloco bloco_vet[MAX];
@@ -74,7 +72,7 @@ int main(){
             if (k>cont_bloco || k>cont_bloco)
                 puts("erro, não tem este bloco");
             else{
-                redefine(&bloco_vet[k]);
+                redefine(&bloco_vet[k], &cont_bloco);
             }
 
             break;
@@ -100,9 +98,13 @@ void novo_bloco(int *idx, bloco *pt_mov){
         exit(1);
     }
     else{
+    	int i, proximo_id;
         printf("bloco de tamanho %d criado com sucesso\n\n",bytes);
-
-        (pt_mov + t)->id_bloco = t;
+		while(proximo_id == (pt_mov + proximo_id) -> id_bloco){
+			proximo_id++;
+		}
+ 
+        (pt_mov + t)->id_bloco = proximo_id;
         (pt_mov+t)->tamb = bytes;
         (pt_mov+t)->cont_texto = 0;
         (pt_mov+t)->add=0;
@@ -111,12 +113,6 @@ void novo_bloco(int *idx, bloco *pt_mov){
     }
     char ch;
     ch = getch( );fflush(stdin);
-    if(ch==':'){}
-    else
-    return;
-
-
-
 }
 
 void imprime_bloco(bloco *mov)
@@ -124,20 +120,15 @@ void imprime_bloco(bloco *mov)
     //system("CLS");
     printf("\nid do bloco %x",mov->id_bloco);
     printf("\nendereco inicial %x",mov->end_in);
+
     if(mov->add == 0)
-    {
         printf("\nconteudo nao adicionado");
-    }
-    else{
+    else
         printf("\nconteudo do bloco: %s",mov->conteudo);
-    }
+    
     printf("\ntamanho %d",mov->tamb);
     char ch;
     ch = getch( );fflush(stdin);
-    if(ch==':'){}
-    else
-    return;
-
 }
 
 void inserir(int k, bloco *vet)
@@ -148,20 +139,14 @@ void inserir(int k, bloco *vet)
     puts("insira sua string");
     scanf("%s",&carac);
     (vet+k)->add = 1;
+    
     if(total < strlen(carac))
-    {
         puts("erro - string muito grande para comportar na memoria");
-    }
     else
-    {
         strcat(add_conteudo, carac);
-    }
+        
     char ch;
     ch = getch( );fflush(stdin);
-    if(ch==':'){}
-    else
-    return;
-
 }
 
 void excluir(int *idx,int inicial , bloco *vet)
@@ -181,43 +166,34 @@ void excluir(int *idx,int inicial , bloco *vet)
     (*idx)--; //como excluimos um termo deve tirar-lo da contagem do vetor.
     char ch;
     ch = getch( );fflush(stdin);
-    if(ch==':'){}
-    else
-    return;
-
 }
 
-void string_redimensionada(char *string, int novo_tamanho, char *nova_string){
-	int i;
-	
-	for(i = 0; i < novo_tamanho; i++){
-		nova_string[i] = string[i];
-	}
-}
-
-void    redefine(bloco *vet)
+void redefine(bloco *vet, int *idx)
 {
-    int tam,tam_ant;
-    char op, *end_final,*iptr;
-
-    tam_ant = vet->tamb;
-    
-    printf("\ntamanho atual do bloco: %d",tam_ant);
-
-    puts("\ninsira o tamanho com a reducao ou aumento");
-    scanf("%d",&vet->tamb);
-	char *novo_conteudo;
-    string_redimensionada(vet->conteudo, vet->tamb, novo_conteudo);
-	if ((vet->conteudo = (char*) realloc((char*) vet->conteudo, vet->tamb*sizeof(char))) == NULL) {
-        puts("texto nao suportado no novo espaço");
-        exit(1);
-    }
-    else{
-        vet->end_in =(int *) vet->conteudo;
-    }
-    //printf("%s\n", novo_conteudo);
-    vet->conteudo = novo_conteudo; 
-    free_novo_conteudo;
+    char *string_antiga = vet -> conteudo;
+	int novo_tamanho;
+	int tamanho_antigo = vet -> tamb;
+	int i;
+	printf(" Tamanho atual do bloco: %d\n", tamanho_antigo);
+	puts("Insira um novo tamanho: ");
+	scanf(" %d", &novo_tamanho);
+	char *pt_aux;
+	if(novo_tamanho < tamanho_antigo){
+		pt_aux = (char *)malloc(novo_tamanho * sizeof(char));
+		if(pt_aux == NULL){
+			exit(1);
+		}else{
+			for(i = 0; i < novo_tamanho; i++){
+				pt_aux[i] = string_antiga[i];
+			}
+			pt_aux[novo_tamanho] = '\0';
+			free(vet -> conteudo);
+			
+			vet -> conteudo = pt_aux;
+			vet -> tamb = novo_tamanho;
+			vet -> end_in = (int *) (vet-> conteudo);
+		}
+	}
     char ch;
     ch = getch( );fflush(stdin);
 }
