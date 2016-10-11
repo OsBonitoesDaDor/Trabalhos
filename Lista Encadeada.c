@@ -127,6 +127,31 @@ int listaRegistros(REGISTRO *reg){
 	else
 		return listaRegistros(reg -> proximo_registro);
 }
+int exclui_registro(REGISTRO *ancora, int id){
+	REGISTRO *reg_del;	//Registro que sera excluido
+	REGISTRO *reg_anterior;		//Para exlcuir o vetor, apontamos o vetor anterior ao selecionado para o proximo
+	REGISTRO *reg_proximo;
+	reg_del = ancora;
+	reg_anterior = ancora;
+	do{		//Esse loop manipula a variavel para que o bloco que sera excluido seja o bloco com o ID certo
+		if(reg_del -> id == id)
+			break;
+		else
+			reg_del = reg_del -> proximo_registro;
+	}while(1);
+	do{		//Esse loop pega o registro anterior ao registro a ser exluido
+		if(reg_anterior -> proximo_registro == reg_del)
+			break;
+		else
+			reg_anterior = reg_anterior -> proximo_registro;
+	}while(1);
+	reg_proximo = reg_del -> proximo_registro;
+	
+	reg_anterior -> proximo_registro = reg_proximo;
+	free(reg_del);
+
+	return 1;
+}
 int main(){
 	REGISTRO *ancora;
 	int id;
@@ -135,7 +160,7 @@ int main(){
 	criaLista(&ancora);
     system("color 1E");
 	do{
-		puts("1 - Criar registro\n2 - Imprime registros\n3 - Modifica registro\n");
+		puts("1 - Criar registro\n2 - Imprime registros\n3 - Modifica registro\n4 - Excluir registro\ns - Sair do programa\n");
 		op = getch( );fflush(stdin);	//Caractere que define a operacao a ser realizada
 		switch(op){
 			case '1':
@@ -154,6 +179,13 @@ int main(){
 				puts("Insira o ID do documento a ser modificado: ");
 				scanf(" %d", &id_reg);
 				modifica_registro(ancora, id_reg);
+				system("CLS");
+				break;
+			case '4':
+				//int id_reg;
+				puts("Insira o ID do documento a ser excluido: ");
+				scanf(" %d", &id_reg);
+				exclui_registro(ancora, id_reg);
 				system("CLS");
 				break;
 		}
