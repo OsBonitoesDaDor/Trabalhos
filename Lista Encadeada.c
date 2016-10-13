@@ -10,7 +10,7 @@ typedef struct asd {
 	char nome_do_responsavel[50];
 	int numero_de_folhas;
 	char tipo_de_doc;
-	struct asd *proximo_registro;
+	struct asd *proximo_registro = NULL;
 }REGISTRO;
 
 void cria_registro(REGISTRO **ancora, int id){
@@ -129,25 +129,28 @@ int listaRegistros(REGISTRO *reg){
 }
 int exclui_registro(REGISTRO *ancora, int id){
 	REGISTRO *reg_del;	//Registro que sera excluido
-	REGISTRO *reg_anterior;		//Para exlcuir o vetor, apontamos o vetor anterior ao selecionado para o proximo
-	REGISTRO *reg_proximo;
+	REGISTRO *reg_ant;		//Para exlcuir o vetor, apontamos o vetor anterior ao selecionado para o proximo
 	reg_del = ancora;
-	reg_anterior = ancora;
+	reg_ant = ancora;
 	do{		//Esse loop manipula a variavel para que o bloco que sera excluido seja o bloco com o ID certo
 		if(reg_del -> id == id)
 			break;
 		else
 			reg_del = reg_del -> proximo_registro;
 	}while(1);
-	do{		//Esse loop pega o registro anterior ao registro a ser exluido
-		if(reg_anterior -> proximo_registro == reg_del)
+
+	printf("a\n");
+	do{
+		printf("c\n");
+		if( reg_ant -> proximo_registro == reg_del)
 			break;
 		else
-			reg_anterior = reg_anterior -> proximo_registro;
+			reg_ant = reg_ant -> proximo_registro;
 	}while(1);
-	reg_proximo = reg_del -> proximo_registro;
-	
-	reg_anterior -> proximo_registro = reg_proximo;
+	printf("b\n");
+
+
+	reg_ant -> proximo_registro = reg_del -> proximo_registro;
 	free(reg_del);
 
 	return 1;
