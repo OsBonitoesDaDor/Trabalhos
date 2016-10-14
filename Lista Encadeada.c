@@ -127,33 +127,44 @@ int listaRegistros(REGISTRO *reg){
 	else
 		return listaRegistros(reg -> proximo_registro);
 }
-int exclui_registro(REGISTRO *ancora, int id){
-	REGISTRO *reg_del;	//Registro que sera excluido
-	REGISTRO *reg_ant;		//Para exlcuir o vetor, apontamos o vetor anterior ao selecionado para o proximo
-	reg_del = ancora;
-	reg_ant = ancora;
-	do{		//Esse loop manipula a variavel para que o bloco que sera excluido seja o bloco com o ID certo
-		if(reg_del -> id == id)
+int exclui_registro(REGISTRO **pt_mov, REGISTRO *ptAnt){
+int id;
+	REGISTRO *ptAux;
+REGISTRO *ptApaga;
+	ptApaga = ptAnt;
+	
+	system("cls");
+	
+	printf("\nExclui cadastro");
+	printf("\n\nDigite o codigo do Documento: ");
+	scanf("%d", &id); fflush(stdin);
+
+	while(1){
+		if(ptAnt == NULL || ptAnt->id == id){
 			break;
-		else
-			reg_del = reg_del -> proximo_registro;
-	}while(1);
-
-	printf("a\n");
-	do{
-		printf("c\n");
-		if( reg_ant -> proximo_registro == reg_del)
-			break;
-		else
-			reg_ant = reg_ant -> proximo_registro;
-	}while(1);
-	printf("b\n");
-
-
-	reg_ant -> proximo_registro = reg_del -> proximo_registro;
-	free(reg_del);
-
-	return 1;
+		}
+		ptAux =ptAnt;
+		ptAnt = (ptAnt)->proximo_registro;
+	}
+	ptApaga = ptAnt;
+	
+	if(ptAnt != NULL){
+		if((ptAnt)->proximo_registro == NULL && ptAnt == *pt_mov)
+			*pt_mov = NULL;
+		else if(ptAnt == *pt_mov){
+			*pt_mov = ptAnt->proximo_registro;
+		}
+		else{
+			ptAnt = ptAux;
+			ptAux = (ptAnt)->proximo_registro;
+			
+			(ptAnt)->proximo_registro = (ptAux)->proximo_registro;
+		}
+	}
+	else{
+		printf("\nId nao encontrado");
+	}
+	
 }
 int main(){
 	REGISTRO *ancora;
@@ -185,10 +196,7 @@ int main(){
 				system("CLS");
 				break;
 			case '4':
-				//int id_reg;
-				puts("Insira o ID do documento a ser excluido: ");
-				scanf(" %d", &id_reg);
-				exclui_registro(ancora, id_reg);
+				exclui_registro(&ancora, ancora);
 				system("CLS");
 				break;
 		}
