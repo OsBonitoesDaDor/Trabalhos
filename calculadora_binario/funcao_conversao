@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+int conversao_em_hex();
+int conversao_em_oct();
+int conversao_em_dec();
+int conversao_em_bin();
+      
+int main(){
+	char idOp;
+	printf("Digite a sua base, use:\nx - Para hexadecimal\no - Para octal\nd - Para decimal\nb - Para binario\nc - Para cancelar");
+	idOp = getch( );fflush(stdin);
+	system("CLS");
+	switch(idOp){
+		case 'x':
+			conversao_em_hex();
+			break;
+		case 'o':
+			conversao_em_oct();
+			break;
+		case 'd':
+			conversao_em_dec();
+		case 'b':
+		//	conversao_em_bin();
+			break;
+		case 'c':
+			break;
+	}
+
+	
+	system("pause");
+	return 0;
+}
+
+int conversao_em_hex(){
+	int hexadecimal;
+	printf("Digite um valor em hexadecimal: ");
+	scanf(" %x", &hexadecimal);
+	char * binario =(char *)malloc(sizeof(char) * 100);
+	itoa(hexadecimal, binario, 2);
+	printf("Em decimal: %d\nEm hexadecimal: %x\nEm octal: %o\nEm binario: %s", hexadecimal, hexadecimal, hexadecimal, binario);
+}
+
+int conversao_em_oct(){
+	int hexadecimal;
+	printf("Digite um valor em octal: ");
+	scanf(" %o", &hexadecimal);
+	char * binario =(char *)malloc(sizeof(char) * 100);
+	itoa(hexadecimal, binario, 2);
+	printf("Em decimal: %d\nEm hexadecimal: %x\nEm octal: %o\nEm binario: %s", hexadecimal, hexadecimal, hexadecimal, binario);
+}
+
+int conversao_em_dec(){
+	int hexadecimal;
+	printf("Digite um valor em decimal: ");
+	scanf(" %d", &hexadecimal);
+	char * binario =(char *)malloc(sizeof(char) * 100);
+	itoa(hexadecimal, binario, 2);
+	printf("Em decimal: %d\nEm hexadecimal: %x\nEm octal: %o\nEm binario: %s", hexadecimal, hexadecimal, hexadecimal, binario);
+}
+
+int conversao_em_binario(){
+	
+	
+}
