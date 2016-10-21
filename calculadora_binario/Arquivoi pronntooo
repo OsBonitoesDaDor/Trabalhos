@@ -27,17 +27,17 @@ char * funcao_neg(char *);
 int main(){
 	
 	char id_op;
-	printf("Digite '1' para operacoes de conversao, e '2' para operacoes logicas");
-	
-	while(1){
-	id_op = getch( );fflush(stdin);
-	
-	if(id_op == '1'){
-		conversao_de_bases();
-	}else if(id_op == '2'){
-		funcoes_de_logica();
-	}
-}
+	do{
+		system("CLS");
+		printf("Digite \n'1' para operacoes de conversao,  \n'2' para operacoes logicas  \n'c' para sair");
+		id_op = getch( );fflush(stdin);
+		
+		if(id_op == '1'){
+			conversao_de_bases();
+		}else if(id_op == '2'){
+			funcoes_de_logica();
+		}
+	}while(id_op != 'c');
 	system("PAUSE");
 	return 0;
 }
@@ -45,8 +45,8 @@ int main(){
 
 char * funcao_e(char *valor_binario1, char *valor_binario2){
     int i;
-    //char resultado[max];
     char *resultado = (char *) malloc( 5 * sizeof(char));
+    
     for(i=0;    i<max;  i++)
     {
         if ( (valor_binario1[i] != '0')  && (valor_binario2[i] != '0'))
@@ -84,10 +84,10 @@ char * funcao_ou(char *valor_binario1, char *valor_binario2){
 char * funcao_neg(char *valor_binario){
 	char * resultado = (char *) malloc(sizeof(char) * strlen(valor_binario));
 	for(int i = 0; i < strlen(valor_binario); i ++){
-		if(valor_binario[i] == '1')
-			resultado[i] = '0';
+		if(*(valor_binario + i) == '1')
+			*(resultado + i) = '0';
 		else
-			resultado[i] = '1' ;
+			*(resultado + i) = '1' ;
 	}
 	
 	return resultado;
@@ -108,6 +108,7 @@ int conversao_de_bases(){
 			break;
 		case 'd':
 			conversao_em_dec();
+			break;
 		case 'b':
 			conversao_em_bin();
 			break;
@@ -123,7 +124,7 @@ int conversao_de_bases(){
 
 int conversao_em_hex(){
 	int hexadecimal;
-	printf("Digite um valor em hexadecimal: ");
+	printf("\nDigite um valor em hexadecimal: ");
 	scanf(" %x", &hexadecimal);
 	char * binario =(char *)malloc(sizeof(char) * 100);
 	itoa(hexadecimal, binario, 2);
@@ -132,7 +133,7 @@ int conversao_em_hex(){
 
 int conversao_em_oct(){
 	int octal;
-	printf("Digite um valor em octal: ");
+	printf("\nDigite um valor em octal: ");
 	scanf(" %o", &octal);
 	char * binario =(char *)malloc(sizeof(char) * 100);
 	itoa(octal, binario, 2);
@@ -141,7 +142,7 @@ int conversao_em_oct(){
 
 int conversao_em_dec(){
 	int decimal;
-	printf("Digite um valor em decimal: ");
+	printf("\nDigite um valor em decimal: ");
 	scanf(" %d", &decimal);
 	char * binario =(char *)malloc(sizeof(char) * 100);
 	itoa(decimal, binario, 2);
@@ -150,7 +151,7 @@ int conversao_em_dec(){
 
 int conversao_em_bin(){
 	int bin, dec;
-   printf("Digite um valor em binario: ");
+   printf("\nDigite um valor em binario: ");
    scanf(" %d", &bin);
    dec = bin_em_int(bin);
 	printf("Em decimal: %d\nEm hexadecimal: %x\nEm octal: %o\nEm binario: %d", dec, dec, dec, bin);
@@ -171,33 +172,92 @@ int bin_em_int(int bin){
     return total;	
 }
 
+/*
+char * entrada_formatada( char*string){}
+	int tamanho = strlen(string);
+	printf(" \n%d\n", tamanho);
+	char * resultado = (char *)malloc(sizeof(char) * 5);
+	resultado[tamanho] = '\0';
+	for(int i = strlen(resultado) - 1 ; i >= 0; i--){printf("a");
+		if( i > tamanho)
+			resultado[i] = 48;
+		else
+			resultado[i] = string[i];
+	}
+	printf(" \n%s\n", resultado);
+	return resultado;
+	
+}
+*/
+
+char * entrada_formatada(char *string){
+	char *resultado = (char *) calloc(5,sizeof(char));
+	int tam = strlen(string);
+	int i;	
+//	char * str0 = (char *) malloc(sizeof(char) * (4 - tamanho ));
+	for(i = 0; i < tam; i++){
+			resultado[i] = '0';
+	}
+	printf(" \nB%s\n", string);
+	printf("\n%s\n", resultado);
+	
+//	for(i = tam; i < 4; i++){
+//		printf(" \nA:%c\n", *(string+i));
+//		* (resultado+i) = *(string+i);
+//	}
+//	printf("\n%s\n", resultado);
+	strcat(resultado, string);
+	//resultado[strlen(resultado)] = '\0';
+	printf(" \n%s\n", resultado);
+	
+	return resultado;
+	
+}
+
+
+
 int funcoes_de_logica(){
 	char idOp;
-	char * binario1, * binario2, *result;
-	printf("Voce esta nas funcoes de logica. Digite: \n1 - Para operacao E\n2 - Para operacao ou\n3 - Para negacao\nc - Para sair");
+	system("CLS");
+	char * binario1 = (char * ) malloc(sizeof(char) * 4), * binario2 = (char * ) malloc(sizeof(char) * 4), * result = (char * ) malloc(sizeof(char) * 100);
+	printf("Voce esta nas funcoes de logica. Digite: \n1 - Para operacao E\n2 - Para operacao ou\n3 - Para negacao\nc - Para sair\n");
 	idOp = getch( );fflush(stdin);
-	printf("Entre com o primeiro valor: ");
-	scanf(" %s", binario1);
+	if(idOp == 'c'){
+		return 0;
+	}
+	
 	switch(idOp){
-		case '1':
-			printf("Entre com o segundo valor: ");
-			scanf(" %s", binario2);
+		case '1':		
+			printf("Entre com o primeiro valor: ");
+			scanf(" %s", binario1);fflush(stdin);
+			binario1=entrada_formatada(binario1);
+			printf("\nEntre com o segundo valor: ");
+			scanf(" %s", binario2);fflush(stdin);
+			binario2 = entrada_formatada(binario2);
 			result = funcao_e(binario1, binario2);
 			printf("\n Resultado: %s\n", result);
 			break;
-		case '2':
+		case '2':		
+			printf("Entre com o primeiro valor: ");
+			scanf(" %s", binario1);fflush(stdin);
+			binario1 = entrada_formatada(binario1);
 			printf("Entre com o segundo valor: ");
-			scanf(" %s", binario2);
+			scanf(" %s", binario2);fflush(stdin);
+			binario2 = entrada_formatada(binario2);
 			result = funcao_ou(binario1, binario2);
 			printf(" \nResultado: %s", result);
 			break;
 		case '3':
+			printf("Entre com o primeiro valor: ");
+			scanf(" %s", binario1);fflush(stdin);
+			binario1 = entrada_formatada(binario1);
 			result = funcao_neg(binario1);
-			printf("O resultado e %s", binario1);
+			printf("O resultado e %s", result);
 			break;
-		case'c':
+		default:
 			return 0;
+			break;
 	}
-	
+	idOp = getch( );fflush(stdin);
 	return funcoes_de_logica();
 }
