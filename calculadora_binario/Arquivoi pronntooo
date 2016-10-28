@@ -218,10 +218,13 @@ int funcoes_de_logica(){
 	char * binario1 = (char * ) malloc(sizeof(char) * 4), * binario2 = (char * ) malloc(sizeof(char) * 4), * result = (char * ) malloc(sizeof(char) * 100);
 	printf("Voce esta nas funcoes de logica. Digite: \n1 - Para operacao E\n2 - Para operacao ou\n3 - Para negacao\nc - Para sair\n");
 	idOp = getch( );fflush(stdin);
+	
+	unsigned int entrada_byte;
+	char * binario =  (char *)malloc(sizeof(char) * 100), * res =  (char *)malloc(sizeof(char) * 100);
+	
 	if(idOp == 'c'){
 		return 0;
 	}
-	
 	switch(idOp){
 		case '1':		
 			printf("Entre com o primeiro valor: ");
@@ -244,12 +247,18 @@ int funcoes_de_logica(){
 			printf(" \nResultado: %s", result);
 			break;
 		case '3':
-			printf("Entre com o primeiro valor: ");
+		
+		printf("Entre com um valor: ");
+		scanf(" %i", &entrada_byte);
+		itoa(entrada_byte, binario, 2);
+		res = entrada_formatada(binario);
+		printf(" Resultado: %i\n", ~res);
+		/**	printf("Entre com o primeiro valor: ");
 			scanf(" %s", binario1);fflush(stdin);
 			binario1 = entrada_formatada(binario1);
 			result = funcao_neg(binario1);
 			printf("O resultado e %s", result);
-			break;
+		*/	break;
 		default:
 			return 0;
 			break;
