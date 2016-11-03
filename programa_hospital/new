@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TRUE 1
+#define FALSE 0
+#define DISP_1 00
+#define DISP_2 10
+#define DISP_3 01
+#define DISP_4 11
+//Valida o dado de uma entrada de 8 bits
+unsigned char valida_dado(unsigned char );
+
+unsigned char desloca (unsigned char, int);
+
+unsigned char classe(unsigned char );
+
+char * escala(unsigned char );
+
+int main(){
+    int j;
+    unsigned char equip, classy;
+	unsigned char i;
+	char esc[5];
+	do{
+		scanf(" %x", &i);
+
+        if(valida_dado(i) == FALSE){
+            printf(" Dado nao valido");
+        }else{
+            int j;
+            for(j = 1; j < 9; j++){
+                printf(" %d\n", desloca(i, j));
+            }
+            //IF do equipamento
+            if(desloca(i, 6) == FALSE)
+            {
+                        if(desloca(i,7) == FALSE)
+                            equip = DISP_1;
+                        else
+                             equip = DISP_3;
+            }else
+            {
+                        if(desloca(i,7) == FALSE)
+                            equip = DISP_2;
+                        else
+                            equip = DISP_4;
+            }//Fim if do equipamento
+            if(classe(i) == FALSE)
+                classy = 'A';
+            else
+                classy = 'B';
+
+            esc = escala(i);
+            printf(" Equip: %d, Classe: %c, Escala: %s", equip, classy, esc);
+        }
+
+
+	}while(i != 0);
+	return 0;
+}
+
+char * escala(unsigned char dado){
+  unsigned  char ret[5], hex = dado >> 7;
+    itoa(hex, ret, 2);
+   // printf(" %s", ret);
+    return ret;
+}
+
+unsigned char classe(unsigned char dado){
+
+    unsigned char  mascara = 0x08, ret;
+    ret = mascara & dado;
+    return ret;
+}
+
+unsigned char desloca (unsigned char dado, int posicao_bit)
+{
+    //int formula = posicao_bit - (posicao_bit - 1);
+    unsigned char a = dado << posicao_bit - 1;
+    a >>= 7;
+  //  if(a != 0)
+  //      return TRUE;
+   // else
+   //     return FALSE;
+
+    return a;
+}
+
+unsigned char valida_dado(unsigned char dado){
+    int mascara = 0x01;
+    if((mascara & dado) != 0)
+        return TRUE;
+    else
+        return FALSE;
+}
