@@ -20,18 +20,35 @@ int id_atual = 0;
 
 int main(){
 	char op;
-	
+	int id_escolhido;
 	do{
 		printf("Entre com a opcao:\n1 - Escrever no registro\n2 - Ler do registro\ns - Sair\n");
 		op = getch( );fflush(stdin);
 		if(op == '1'){
 			escreve_no_arquivo(PATH);
+			system("CLS");
 		}else if(op == '2'){
-			imprime_registro(PATH, -1);
-		}
-		else{
-			
-		}
+//			system("CLS");
+			printf("Digite:\n\t1 - Para mostrar todos os contatos\n\t2 - Para mostrar um contato por id\n\ts - para voltar");
+			op = getch( );fflush(stdin);
+			switch(op){
+				case '1':
+					imprime_registro(PATH, -1);			
+					op = getch( );fflush(stdin);
+					break;
+				case '2':
+					system("CLS");
+					printf("Entre com m id: \n");
+					scanf(" %d", &id_escolhido );
+					imprime_registro(PATH, id_escolhido );
+					op = getch( );fflush(stdin);
+					break;
+				case 's':
+					
+					break;
+			}
+		}		
+		system("CLS");
 	}while(op != 's');
 	
 	
@@ -41,30 +58,44 @@ int main(){
 
 int imprime_registro(char * caminho, int id){
 	FILE * arquivo = NULL;
-	REGISTRO reg;
+	REGISTRO reg, reg_certo;
 	int i;
+	char c;
 	if( (arquivo = fopen(caminho, "rb+") ) == NULL){
 		puts("Deu BO");
 		return 0;
-	}else
-		printf("NAO E NULO! %d\n", sizeof(REGISTRO));
-	
+	}
 	if(id < 0){
-		//printf("To no if");
-		
-		for(i = 1; i <= id_atual + 1; i++){
-			fread(&reg, sizeof(REGISTRO), i, arquivo);
+		while(!feof(arquivo)){
+			fread(&reg, sizeof(reg), 1, arquivo);
+			printf("ID: %d\n", reg.id);
 			printf("Nome: %s\n", reg.nome);
 			printf("Endereco %s\n", reg.endereco);
 			printf("Telefone %s\n", reg.telefone);
 			printf("Data de nascimento %s\n", reg.data_de_nascimento );
 			printf("Idade %s\n", reg.idade);	
+			printf("---------------------------------\n");
+		}	
 		
+		//	c = getch( );fflush(stdin);
+	}else{
+		while(!feof(arquivo)){
+			fread(&reg, sizeof(reg), 1, arquivo);
+			if(reg.id == id){
+				printf("ID: %d\n", reg.id);
+				printf("Nome: %s\n", reg.nome);
+				printf("Endereco %s\n", reg.endereco);
+				printf("Telefone %s\n", reg.telefone);
+				printf("Data de nascimento %s\n", reg.data_de_nascimento );
+				printf("Idade %s\n", reg.idade);	
+				printf("---------------------------------\n");		
+			}
 		}
-	
-	}else{	
+		
+		//		c = getch( );fflush(stdin);	
 	}
 	
+	fclose(arquivo);
 	
 }
 
@@ -76,6 +107,7 @@ void escreve_no_arquivo(char * caminho){
 		return;
 	}
 	do{	
+		system("CLS");
 		REGISTRO reg;
 		printf("Nome entre com: \n");
 		scanf(" %s", reg.nome);
@@ -86,7 +118,8 @@ void escreve_no_arquivo(char * caminho){
 		printf("Com a nascimento data entre: \n");
 		scanf(" %s", reg.data_de_nascimento );
 		printf("Idade Entre com: \n");
-		scanf(" %s", reg.idade);			reg.id = id_atual;
+		scanf(" %s", reg.idade);
+		reg.id = id_atual;
 		id_atual++;
 	
 		fwrite(&reg, sizeof(reg), 1, arquivo);
